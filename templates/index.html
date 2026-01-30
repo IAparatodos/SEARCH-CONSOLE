@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Search Console - Dashboard | Adrihosan</title>
+    <title>Search Console Dashboard | Adrihosan</title>
 
     <!-- Importar Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -15,6 +15,10 @@
             --dark-bg: #102e35;
             --darker-bg: #0a1f24;
             --white: #ffffff;
+            --amber: #f59e0b;
+            --amber-light: rgba(245, 158, 11, 0.2);
+            --red: #ef4444;
+            --green: #22c55e;
             --font-main: 'Poppins', sans-serif;
         }
 
@@ -33,14 +37,19 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: linear-gradient(145deg, #102e35, #163d46);
             padding: 2rem;
             border-radius: 16px;
         }
 
-        /* Titulos */
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
         h1, h2, h3 {
             color: var(--primary-color);
             text-transform: uppercase;
@@ -48,224 +57,157 @@
             font-weight: 700;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
         h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
+            font-size: 2rem;
+            margin-bottom: 8px;
         }
 
         .subtitle {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
             font-weight: 300;
         }
 
-        /* Query Form */
-        .query-form {
-            background: rgba(63, 111, 123, 0.15);
-            border: 1px solid var(--secondary-color);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 30px;
-            transition: border-color 0.3s ease;
-        }
-
-        .query-form:hover {
-            border-color: var(--primary-color);
-        }
-
-        .query-form h3 {
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            align-items: end;
-        }
-
-        .form-group {
+        /* Tab Navigation */
+        .tab-navigation {
             display: flex;
-            flex-direction: column;
             gap: 8px;
-        }
-
-        .form-group label {
-            color: var(--primary-color);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-
-        .form-group input,
-        .form-group select {
-            padding: 12px 15px;
+            margin-bottom: 30px;
+            padding: 8px;
+            background: rgba(63, 111, 123, 0.15);
+            border-radius: 12px;
             border: 1px solid var(--secondary-color);
-            border-radius: 5px;
-            background: rgba(63, 111, 123, 0.2);
-            color: var(--white);
-            font-size: 0.95rem;
-            font-family: var(--font-main);
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .form-group select option {
-            background: var(--dark-bg);
-            color: var(--white);
-        }
-
-        /* Botones */
-        .btn, button {
-            display: inline-block;
-            padding: 12px 25px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-decoration: none;
-            border: 2px solid var(--primary-color);
-            background-color: var(--primary-color);
-            color: var(--dark-bg);
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            font-family: var(--font-main);
-        }
-
-        .btn:hover, button:hover {
-            background-color: var(--white);
-            color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-
-        .quick-filters {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
             flex-wrap: wrap;
         }
 
-        .quick-btn {
-            padding: 8px 16px;
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
             background: transparent;
-            border: 1px solid var(--secondary-color);
-            border-radius: 20px;
-            color: var(--white);
-            font-size: 0.8rem;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
             font-family: var(--font-main);
+            transition: all 0.3s ease;
         }
 
-        .quick-btn:hover {
-            background: rgba(77, 210, 208, 0.2);
-            border-color: var(--primary-color);
+        .tab-btn:hover {
             color: var(--primary-color);
+            background: rgba(77, 210, 208, 0.1);
         }
 
-        /* Tarjetas de Metricas */
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: var(--dark-bg);
+            border-color: var(--primary-color);
+        }
+
+        .tab-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .stat-card {
             background: rgba(63, 111, 123, 0.2);
             border: 1px solid var(--secondary-color);
             border-radius: 8px;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
             transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
         .stat-card:hover {
             border-color: var(--primary-color);
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
 
         .stat-value {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--primary-color);
         }
 
         .stat-label {
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 5px;
             text-transform: uppercase;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             letter-spacing: 1px;
             font-weight: 600;
         }
 
-        /* Winner Card - Highlight Section */
+        /* Winner Card */
         .winner-card {
             background: linear-gradient(90deg, #3f6f7b 0%, #4dd2d0 100%);
             border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
+            padding: 25px;
+            margin-bottom: 25px;
             text-align: center;
             color: var(--dark-bg);
         }
 
         .winner-card h2 {
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
             color: var(--dark-bg) !important;
         }
 
         .winner-url {
-            font-size: 1rem;
+            font-size: 0.95rem;
             word-break: break-all;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-weight: 400;
         }
 
         .winner-stats {
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 30px;
             flex-wrap: wrap;
         }
 
-        .winner-stat {
-            text-align: center;
-        }
-
         .winner-stat-value {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: var(--dark-bg);
         }
 
         .winner-stat-label {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        /* Tabla */
+        /* Table Container */
         .table-container {
             background: rgba(63, 111, 123, 0.15);
             border: 1px solid var(--secondary-color);
@@ -274,7 +216,7 @@
         }
 
         .table-header {
-            padding: 20px 25px;
+            padding: 18px 20px;
             border-bottom: 1px solid var(--secondary-color);
             display: flex;
             justify-content: space-between;
@@ -284,33 +226,46 @@
         }
 
         .table-header h2 {
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
-        .dimension-badge {
-            background: rgba(77, 210, 208, 0.2);
-            padding: 5px 15px;
+        .badge {
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--primary-color);
+            font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
+        }
+
+        .badge-primary {
+            background: rgba(77, 210, 208, 0.2);
+            color: var(--primary-color);
+        }
+
+        .badge-amber {
+            background: var(--amber-light);
+            color: var(--amber);
+        }
+
+        .badge-green {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--green);
         }
 
         table {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 0 8px;
-            padding: 0 15px 15px 15px;
+            border-spacing: 0 6px;
+            padding: 0 12px 12px 12px;
         }
 
         th {
             text-align: left;
-            padding: 12px 20px;
+            padding: 10px 15px;
             color: var(--primary-color);
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             letter-spacing: 0.5px;
             border-bottom: 2px solid var(--secondary-color);
         }
@@ -328,9 +283,19 @@
             background-color: rgba(77, 210, 208, 0.1);
         }
 
+        tbody tr.highlight-amber {
+            background-color: var(--amber-light);
+            border-left: 3px solid var(--amber);
+        }
+
+        tbody tr.highlight-amber:hover {
+            background-color: rgba(245, 158, 11, 0.3);
+        }
+
         td {
-            padding: 15px 20px;
+            padding: 12px 15px;
             border: none;
+            font-size: 0.85rem;
         }
 
         /* Ranking Badges */
@@ -338,27 +303,27 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background-color: var(--secondary-color);
             color: var(--white);
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
         }
 
         .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: var(--dark-bg); }
         .rank-2 { background: linear-gradient(135deg, #C0C0C0, #A8A8A8); color: var(--dark-bg); }
-        .rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); color: var(--white); }
+        .rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); }
 
-        .row-key {
-            max-width: 400px;
+        /* Links and URLs */
+        .url-cell {
+            max-width: 350px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        /* Enlaces */
         a {
             color: var(--primary-color);
             text-decoration: none;
@@ -370,7 +335,7 @@
             color: var(--white);
         }
 
-        /* Metricas en tabla */
+        /* Metrics */
         .metric {
             font-weight: 600;
         }
@@ -378,37 +343,106 @@
         .metric-clicks { color: var(--primary-color); }
         .metric-impressions { color: #6dd5ed; }
         .metric-ctr { color: #FFD700; }
+        .metric-ctr.low { color: var(--red); }
         .metric-position { color: #a78bfa; }
+        .metric-position.amber { color: var(--amber); font-weight: 700; }
 
-        /* Error Container */
-        .error-container {
+        /* Action Tags */
+        .action-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--red);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .intent-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .intent-compra {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--green);
+        }
+
+        .intent-producto {
+            background: rgba(77, 210, 208, 0.2);
+            color: var(--primary-color);
+        }
+
+        .keyword-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: rgba(167, 139, 250, 0.2);
+            color: #a78bfa;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            margin: 2px;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--secondary-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error State */
+        .error-message {
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.5);
             border-radius: 12px;
-            padding: 30px;
+            padding: 25px;
             text-align: center;
         }
 
-        .error-container h2 {
-            color: #ef4444 !important;
+        .error-message h3 {
+            color: var(--red) !important;
+            margin-bottom: 10px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .empty-state svg {
+            width: 60px;
+            height: 60px;
             margin-bottom: 15px;
+            opacity: 0.5;
         }
 
-        .filter-active {
-            background: rgba(167, 139, 250, 0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #a78bfa;
-            margin-left: 10px;
-            font-weight: 600;
-        }
-
+        /* Footer */
         footer {
             text-align: center;
-            margin-top: 40px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.85rem;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.8rem;
             font-weight: 300;
         }
 
@@ -417,14 +451,14 @@
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .container { padding: 1rem; }
-            h1 { font-size: 1.6rem; }
-            .stat-value { font-size: 2rem; }
-            th, td { padding: 10px 12px; }
-            .row-key { max-width: 180px; }
-            .form-grid { grid-template-columns: 1fr; }
-            .winner-stats { gap: 20px; }
+            h1 { font-size: 1.5rem; }
+            .tab-btn { padding: 10px 14px; font-size: 0.75rem; }
+            .tab-btn span { display: none; }
+            .stat-value { font-size: 1.6rem; }
+            th, td { padding: 8px 10px; font-size: 0.75rem; }
+            .url-cell { max-width: 150px; }
         }
     </style>
 </head>
@@ -432,176 +466,504 @@
     <div class="container">
         <header>
             <h1>Search Console Dashboard</h1>
-            {% if data %}
-            <p class="subtitle">{{ data.site_url }} | {{ data.start_date }} - {{ data.end_date }} ({{ data.days }} dias)</p>
-            {% endif %}
+            <p class="subtitle" id="date-range">Cargando datos...</p>
         </header>
 
-        <!-- Query Form -->
-        <div class="query-form">
-            <h3>Consulta Personalizada</h3>
-            <form method="GET" action="/">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Dimension</label>
-                        <select name="dimension">
-                            <option value="page" {% if current_dimension == 'page' %}selected{% endif %}>Paginas</option>
-                            <option value="query" {% if current_dimension == 'query' %}selected{% endif %}>Consultas (Keywords)</option>
-                            <option value="country" {% if current_dimension == 'country' %}selected{% endif %}>Paises</option>
-                            <option value="device" {% if current_dimension == 'device' %}selected{% endif %}>Dispositivos</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Dias</label>
-                        <select name="days">
-                            <option value="7" {% if current_days == 7 %}selected{% endif %}>7 dias</option>
-                            <option value="28" {% if current_days == 28 %}selected{% endif %}>28 dias</option>
-                            <option value="90" {% if current_days == 90 %}selected{% endif %}>90 dias</option>
-                            <option value="180" {% if current_days == 180 %}selected{% endif %}>6 meses</option>
-                            <option value="365" {% if current_days == 365 %}selected{% endif %}>1 ano</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Resultados</label>
-                        <select name="limit">
-                            <option value="10" {% if current_limit == 10 %}selected{% endif %}>Top 10</option>
-                            <option value="25" {% if current_limit == 25 %}selected{% endif %}>Top 25</option>
-                            <option value="50" {% if current_limit == 50 %}selected{% endif %}>Top 50</option>
-                            <option value="100" {% if current_limit == 100 %}selected{% endif %}>Top 100</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Filtrar por</label>
-                        <input type="text" name="filter" placeholder="Buscar..." value="{{ current_filter or '' }}">
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Consultar</button>
-                    </div>
-                </div>
-            </form>
-            <div class="quick-filters">
-                <a href="/?dimension=page&days=90&limit=10" class="quick-btn">Top Paginas 90d</a>
-                <a href="/?dimension=query&days=28&limit=25" class="quick-btn">Keywords 28d</a>
-                <a href="/?dimension=country&days=90&limit=10" class="quick-btn">Por Pais</a>
-                <a href="/?dimension=device&days=90&limit=10" class="quick-btn">Por Dispositivo</a>
-                <a href="/?dimension=page&days=7&limit=10" class="quick-btn">Ultima Semana</a>
+        <!-- Tab Navigation -->
+        <nav class="tab-navigation">
+            <button class="tab-btn active" data-tab="performance">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>
+                </svg>
+                <span>Rendimiento</span>
+            </button>
+            <button class="tab-btn" data-tab="ctr">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                </svg>
+                <span>Oportunidades CTR</span>
+            </button>
+            <button class="tab-btn" data-tab="quickwins">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+                <span>Quick Wins</span>
+            </button>
+            <button class="tab-btn" data-tab="transactional">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                <span>Transaccional</span>
+            </button>
+        </nav>
+
+        <!-- Tab 1: Rendimiento General -->
+        <div class="tab-content active" id="tab-performance">
+            <div class="loading" id="loading-performance">
+                <div class="loading-spinner"></div>
+                <p>Cargando rendimiento...</p>
             </div>
+            <div id="content-performance" style="display:none;"></div>
         </div>
 
-        {% if error %}
-        <div class="error-container">
-            <h2>Error al obtener datos</h2>
-            <p>{{ error }}</p>
-        </div>
-        {% elif data and data.rows %}
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">{{ "{:,}".format(data.total_clicks) }}</div>
-                <div class="stat-label">Total Clicks</div>
+        <!-- Tab 2: Oportunidades CTR -->
+        <div class="tab-content" id="tab-ctr">
+            <div class="loading" id="loading-ctr">
+                <div class="loading-spinner"></div>
+                <p>Analizando oportunidades de CTR...</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-value">{{ "{:,}".format(data.total_impressions) }}</div>
-                <div class="stat-label">Total Impresiones</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">{{ data.rows|length }}</div>
-                <div class="stat-label">Resultados</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">{{ data.days }}</div>
-                <div class="stat-label">Dias</div>
-            </div>
+            <div id="content-ctr" style="display:none;"></div>
         </div>
 
-        <div class="winner-card">
-            <h2>
-                {% if data.dimension == 'page' %}📄{% elif data.dimension == 'query' %}🔍{% elif data.dimension == 'country' %}🌍{% else %}📱{% endif %}
-                Top #1
-                {% if data.dimension == 'page' %}Pagina{% elif data.dimension == 'query' %}Keyword{% elif data.dimension == 'country' %}Pais{% else %}Dispositivo{% endif %}
-            </h2>
-            <p class="winner-url">{{ data.rows[0].key }}</p>
-            <div class="winner-stats">
-                <div class="winner-stat">
-                    <div class="winner-stat-value">{{ "{:,}".format(data.rows[0].clicks) }}</div>
-                    <div class="winner-stat-label">Clicks</div>
-                </div>
-                <div class="winner-stat">
-                    <div class="winner-stat-value">{{ "{:,}".format(data.rows[0].impressions) }}</div>
-                    <div class="winner-stat-label">Impresiones</div>
-                </div>
-                <div class="winner-stat">
-                    <div class="winner-stat-value">{{ data.rows[0].ctr }}%</div>
-                    <div class="winner-stat-label">CTR</div>
-                </div>
-                <div class="winner-stat">
-                    <div class="winner-stat-value">{{ data.rows[0].position }}</div>
-                    <div class="winner-stat-label">Posicion</div>
-                </div>
+        <!-- Tab 3: Quick Wins -->
+        <div class="tab-content" id="tab-quickwins">
+            <div class="loading" id="loading-quickwins">
+                <div class="loading-spinner"></div>
+                <p>Buscando Quick Wins...</p>
             </div>
+            <div id="content-quickwins" style="display:none;"></div>
         </div>
 
-        <div class="table-container">
-            <div class="table-header">
-                <h2>
-                    Resultados por
-                    {% if data.dimension == 'page' %}Pagina{% elif data.dimension == 'query' %}Keyword{% elif data.dimension == 'country' %}Pais{% else %}Dispositivo{% endif %}
-                </h2>
-                <div>
-                    <span class="dimension-badge">{{ data.dimension }}</span>
-                    {% if data.filter %}
-                    <span class="filter-active">Filtro: {{ data.filter }}</span>
-                    {% endif %}
-                </div>
+        <!-- Tab 4: Transaccional -->
+        <div class="tab-content" id="tab-transactional">
+            <div class="loading" id="loading-transactional">
+                <div class="loading-spinner"></div>
+                <p>Analizando intención de compra...</p>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>{% if data.dimension == 'page' %}Pagina{% elif data.dimension == 'query' %}Keyword{% elif data.dimension == 'country' %}Pais{% else %}Dispositivo{% endif %}</th>
-                        <th>Clicks</th>
-                        <th>Impresiones</th>
-                        <th>CTR</th>
-                        <th>Posicion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in data.rows %}
-                    <tr>
-                        <td>
-                            <span class="rank {% if loop.index <= 3 %}rank-{{ loop.index }}{% endif %}">
-                                {{ loop.index }}
-                            </span>
-                        </td>
-                        <td class="row-key">
-                            {% if data.dimension == 'page' %}
-                            <a href="{{ row.key }}" target="_blank" title="{{ row.key }}">
-                                {{ row.key | replace(data.site_url, '') or '/' }}
-                            </a>
-                            {% else %}
-                            {{ row.key }}
-                            {% endif %}
-                        </td>
-                        <td class="metric metric-clicks">{{ "{:,}".format(row.clicks) }}</td>
-                        <td class="metric metric-impressions">{{ "{:,}".format(row.impressions) }}</td>
-                        <td class="metric metric-ctr">{{ row.ctr }}%</td>
-                        <td class="metric metric-position">{{ row.position }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div id="content-transactional" style="display:none;"></div>
         </div>
-
-        {% else %}
-        <div class="error-container">
-            <h2>Sin datos</h2>
-            <p>No se encontraron datos para los filtros seleccionados.</p>
-        </div>
-        {% endif %}
 
         <footer>
-            <p>Google Search Console Dashboard | <a href="https://www.adrihosan.com" target="_blank">adrihosan.com</a></p>
+            <p>Search Console Dashboard | <a href="https://www.adrihosan.com" target="_blank">adrihosan.com</a></p>
         </footer>
     </div>
+
+    <script>
+        const SITE_URL = 'https://www.adrihosan.com';
+
+        // Tab Navigation
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+
+                // Update buttons
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update content
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                document.getElementById(`tab-${tabId}`).classList.add('active');
+
+                // Load data if not loaded
+                loadTabData(tabId);
+            });
+        });
+
+        // Data loading state
+        const loadedTabs = {};
+
+        async function loadTabData(tabId) {
+            if (loadedTabs[tabId]) return;
+
+            const loaders = {
+                'performance': loadPerformance,
+                'ctr': loadCtrOpportunities,
+                'quickwins': loadQuickWins,
+                'transactional': loadTransactional
+            };
+
+            if (loaders[tabId]) {
+                await loaders[tabId]();
+                loadedTabs[tabId] = true;
+            }
+        }
+
+        // Format numbers
+        function formatNumber(num) {
+            return num.toLocaleString('es-ES');
+        }
+
+        function cleanUrl(url) {
+            return url.replace(SITE_URL, '') || '/';
+        }
+
+        // Tab 1: Performance
+        async function loadPerformance() {
+            try {
+                const response = await fetch('/api/performance?days=90&limit=10');
+                const data = await response.json();
+
+                if (data.error) throw new Error(data.error);
+
+                document.getElementById('date-range').textContent =
+                    `${data.site_url} | ${data.start_date} - ${data.end_date} (${data.days} dias)`;
+
+                const top = data.rows[0] || {};
+                const html = `
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">${formatNumber(data.total_clicks)}</div>
+                            <div class="stat-label">Total Clicks</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${formatNumber(data.total_impressions)}</div>
+                            <div class="stat-label">Impresiones</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${data.rows.length}</div>
+                            <div class="stat-label">Paginas Top</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${data.days}</div>
+                            <div class="stat-label">Dias</div>
+                        </div>
+                    </div>
+
+                    ${top.key ? `
+                    <div class="winner-card">
+                        <h2>🏆 Pagina Mas Visitada</h2>
+                        <p class="winner-url">${top.key}</p>
+                        <div class="winner-stats">
+                            <div>
+                                <div class="winner-stat-value">${formatNumber(top.clicks)}</div>
+                                <div class="winner-stat-label">Clicks</div>
+                            </div>
+                            <div>
+                                <div class="winner-stat-value">${formatNumber(top.impressions)}</div>
+                                <div class="winner-stat-label">Impresiones</div>
+                            </div>
+                            <div>
+                                <div class="winner-stat-value">${top.ctr}%</div>
+                                <div class="winner-stat-label">CTR</div>
+                            </div>
+                            <div>
+                                <div class="winner-stat-value">${top.position}</div>
+                                <div class="winner-stat-label">Posicion</div>
+                            </div>
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h2>🔥 Top 10 Paginas por Clicks</h2>
+                            <span class="badge badge-primary">${data.days} dias</span>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Pagina</th>
+                                    <th>Clicks</th>
+                                    <th>Impresiones</th>
+                                    <th>CTR</th>
+                                    <th>Posicion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.rows.map((row, i) => `
+                                <tr>
+                                    <td><span class="rank ${i < 3 ? 'rank-' + (i+1) : ''}">${i+1}</span></td>
+                                    <td class="url-cell"><a href="${row.key}" target="_blank" title="${row.key}">${cleanUrl(row.key)}</a></td>
+                                    <td class="metric metric-clicks"><strong>${formatNumber(row.clicks)}</strong></td>
+                                    <td class="metric metric-impressions">${formatNumber(row.impressions)}</td>
+                                    <td class="metric metric-ctr">${row.ctr}%</td>
+                                    <td class="metric metric-position">${row.position}</td>
+                                </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                document.getElementById('loading-performance').style.display = 'none';
+                document.getElementById('content-performance').innerHTML = html;
+                document.getElementById('content-performance').style.display = 'block';
+
+            } catch (error) {
+                document.getElementById('loading-performance').style.display = 'none';
+                document.getElementById('content-performance').innerHTML = `
+                    <div class="error-message">
+                        <h3>Error al cargar datos</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+                document.getElementById('content-performance').style.display = 'block';
+            }
+        }
+
+        // Tab 2: CTR Opportunities
+        async function loadCtrOpportunities() {
+            try {
+                const response = await fetch('/api/ctr-opportunities?days=90');
+                const data = await response.json();
+
+                if (data.error) throw new Error(data.error);
+
+                let html = `
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">${data.total_opportunities || 0}</div>
+                            <div class="stat-label">Oportunidades</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">&gt;5K</div>
+                            <div class="stat-label">Impresiones Min</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">&lt;1.5%</div>
+                            <div class="stat-label">CTR Bajo</div>
+                        </div>
+                    </div>
+                `;
+
+                if (data.rows && data.rows.length > 0) {
+                    html += `
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h2>⚡ Oportunidades de Mejora de CTR</h2>
+                                <span class="badge badge-amber">${data.rows.length} paginas</span>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Pagina con Potencial</th>
+                                        <th>Impresiones</th>
+                                        <th>Clicks</th>
+                                        <th>CTR Actual</th>
+                                        <th>Accion Recomendada</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.rows.map((row, i) => `
+                                    <tr>
+                                        <td><span class="rank">${i+1}</span></td>
+                                        <td class="url-cell"><a href="${row.key}" target="_blank">${cleanUrl(row.key)}</a></td>
+                                        <td class="metric metric-impressions"><strong>${formatNumber(row.impressions)}</strong></td>
+                                        <td class="metric metric-clicks">${formatNumber(row.clicks)}</td>
+                                        <td class="metric metric-ctr low"><strong>${row.ctr}%</strong></td>
+                                        <td><span class="action-tag">${row.action}</span></td>
+                                    </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
+                            </svg>
+                            <h3>¡Excelente!</h3>
+                            <p>No hay paginas con CTR bajo y alto volumen de impresiones.</p>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('loading-ctr').style.display = 'none';
+                document.getElementById('content-ctr').innerHTML = html;
+                document.getElementById('content-ctr').style.display = 'block';
+
+            } catch (error) {
+                document.getElementById('loading-ctr').style.display = 'none';
+                document.getElementById('content-ctr').innerHTML = `
+                    <div class="error-message">
+                        <h3>Error al cargar datos</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+                document.getElementById('content-ctr').style.display = 'block';
+            }
+        }
+
+        // Tab 3: Quick Wins
+        async function loadQuickWins() {
+            try {
+                const response = await fetch('/api/quick-wins?days=90');
+                const data = await response.json();
+
+                if (data.error) throw new Error(data.error);
+
+                let html = `
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">${data.total_quick_wins || 0}</div>
+                            <div class="stat-label">Quick Wins</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">10-15</div>
+                            <div class="stat-label">Rango Posicion</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">🎯</div>
+                            <div class="stat-label">Cerca del Top 10</div>
+                        </div>
+                    </div>
+                `;
+
+                if (data.rows && data.rows.length > 0) {
+                    html += `
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h2>⚡ Keywords a un Paso del Top 10</h2>
+                                <span class="badge badge-amber">Umbral Pagina 1</span>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Keyword Objetivo</th>
+                                        <th>Pagina</th>
+                                        <th>Posicion</th>
+                                        <th>Clicks</th>
+                                        <th>Impresiones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.rows.map((row, i) => `
+                                    <tr class="highlight-amber">
+                                        <td><span class="rank">${i+1}</span></td>
+                                        <td><strong>${row.query}</strong></td>
+                                        <td class="url-cell"><a href="${row.page}" target="_blank">${cleanUrl(row.page)}</a></td>
+                                        <td class="metric metric-position amber"><strong>${row.position}</strong></td>
+                                        <td class="metric metric-clicks">${formatNumber(row.clicks)}</td>
+                                        <td class="metric metric-impressions">${formatNumber(row.impressions)}</td>
+                                    </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            <h3>Sin Quick Wins</h3>
+                            <p>No hay keywords en posicion 10-15 actualmente.</p>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('loading-quickwins').style.display = 'none';
+                document.getElementById('content-quickwins').innerHTML = html;
+                document.getElementById('content-quickwins').style.display = 'block';
+
+            } catch (error) {
+                document.getElementById('loading-quickwins').style.display = 'none';
+                document.getElementById('content-quickwins').innerHTML = `
+                    <div class="error-message">
+                        <h3>Error al cargar datos</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+                document.getElementById('content-quickwins').style.display = 'block';
+            }
+        }
+
+        // Tab 4: Transactional
+        async function loadTransactional() {
+            try {
+                const response = await fetch('/api/transactional?days=90');
+                const data = await response.json();
+
+                if (data.error) throw new Error(data.error);
+
+                let html = `
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">${data.total_transactional || 0}</div>
+                            <div class="stat-label">URLs Transaccionales</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${formatNumber(data.transactional_clicks || 0)}</div>
+                            <div class="stat-label">Clicks Compra</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${formatNumber(data.transactional_impressions || 0)}</div>
+                            <div class="stat-label">Impresiones</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px; text-align: center;">
+                        <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 10px;">Keywords rastreadas:</p>
+                        ${(data.keywords_tracked || []).map(kw => `<span class="keyword-tag">${kw}</span>`).join(' ')}
+                    </div>
+                `;
+
+                if (data.rows && data.rows.length > 0) {
+                    html += `
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h2>🛒 Trafico con Intencion de Compra</h2>
+                                <span class="badge badge-green">${data.rows.length} URLs</span>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>URL Transaccional</th>
+                                        <th>Intencion</th>
+                                        <th>Clicks</th>
+                                        <th>Impresiones</th>
+                                        <th>CTR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.rows.map((row, i) => `
+                                    <tr>
+                                        <td><span class="rank ${i < 3 ? 'rank-' + (i+1) : ''}">${i+1}</span></td>
+                                        <td class="url-cell">
+                                            <a href="${row.key}" target="_blank">${cleanUrl(row.key)}</a>
+                                            <div style="margin-top: 4px;">
+                                                ${(row.matched_keywords || []).map(kw => `<span class="keyword-tag">${kw}</span>`).join('')}
+                                            </div>
+                                        </td>
+                                        <td><span class="intent-tag intent-${row.intent.toLowerCase()}">${row.intent}</span></td>
+                                        <td class="metric metric-clicks"><strong>${formatNumber(row.clicks)}</strong></td>
+                                        <td class="metric metric-impressions">${formatNumber(row.impressions)}</td>
+                                        <td class="metric metric-ctr">${row.ctr}%</td>
+                                    </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="empty-state">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                            </svg>
+                            <h3>Sin datos transaccionales</h3>
+                            <p>No se encontraron URLs con las palabras clave definidas.</p>
+                        </div>
+                    `;
+                }
+
+                document.getElementById('loading-transactional').style.display = 'none';
+                document.getElementById('content-transactional').innerHTML = html;
+                document.getElementById('content-transactional').style.display = 'block';
+
+            } catch (error) {
+                document.getElementById('loading-transactional').style.display = 'none';
+                document.getElementById('content-transactional').innerHTML = `
+                    <div class="error-message">
+                        <h3>Error al cargar datos</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+                document.getElementById('content-transactional').style.display = 'block';
+            }
+        }
+
+        // Load initial tab
+        loadTabData('performance');
+    </script>
 </body>
 </html>
