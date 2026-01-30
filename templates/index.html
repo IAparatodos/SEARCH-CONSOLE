@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Search Console - Dashboard</title>
+    <title>Google Search Console - Dashboard | Adrihosan</title>
+
+    <!-- Importar Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --primary-color: #4dd2d0;
+            --secondary-color: #3f6f7b;
+            --dark-bg: #102e35;
+            --darker-bg: #0a1f24;
+            --white: #ffffff;
+            --font-main: 'Poppins', sans-serif;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,16 +25,27 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background-color: var(--dark-bg);
+            color: var(--white);
+            font-family: var(--font-main);
             min-height: 100vh;
-            color: #fff;
             padding: 20px;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            background: linear-gradient(145deg, #102e35, #163d46);
+            padding: 2rem;
+            border-radius: 16px;
+        }
+
+        /* Titulos */
+        h1, h2, h3 {
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
 
         header {
@@ -30,33 +54,33 @@
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 10px;
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .subtitle {
-            color: #8892b0;
-            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            font-weight: 300;
         }
 
         /* Query Form */
         .query-form {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
+            background: rgba(63, 111, 123, 0.15);
+            border: 1px solid var(--secondary-color);
+            border-radius: 12px;
             padding: 25px;
             margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        .query-form:hover {
+            border-color: var(--primary-color);
         }
 
         .query-form h3 {
             margin-bottom: 20px;
-            font-size: 1.2rem;
-            color: #4facfe;
+            font-size: 1.1rem;
         }
 
         .form-grid {
@@ -73,75 +97,87 @@
         }
 
         .form-group label {
-            color: #8892b0;
-            font-size: 0.85rem;
+            color: var(--primary-color);
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 600;
         }
 
         .form-group input,
         .form-group select {
             padding: 12px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
-            font-size: 1rem;
+            border: 1px solid var(--secondary-color);
+            border-radius: 5px;
+            background: rgba(63, 111, 123, 0.2);
+            color: var(--white);
+            font-size: 0.95rem;
+            font-family: var(--font-main);
             transition: border-color 0.3s;
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
-            border-color: #4facfe;
+            border-color: var(--primary-color);
         }
 
         .form-group select option {
-            background: #1a1a2e;
-            color: #fff;
+            background: var(--dark-bg);
+            color: var(--white);
         }
 
-        .btn {
-            padding: 12px 30px;
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
-            border: none;
-            border-radius: 8px;
-            color: #1a1a2e;
+        /* Botones */
+        .btn, button {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 0.9rem;
             font-weight: 600;
-            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            border: 2px solid var(--primary-color);
+            background-color: var(--primary-color);
+            color: var(--dark-bg);
+            transition: all 0.2s ease-in-out;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: var(--font-main);
         }
 
-        .btn:hover {
+        .btn:hover, button:hover {
+            background-color: var(--white);
+            color: var(--primary-color);
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
         }
 
         .quick-filters {
             display: flex;
             gap: 10px;
-            margin-top: 15px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
 
         .quick-btn {
             padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            border: 1px solid var(--secondary-color);
             border-radius: 20px;
-            color: #fff;
-            font-size: 0.85rem;
+            color: var(--white);
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
+            font-family: var(--font-main);
         }
 
-        .quick-btn:hover, .quick-btn.active {
-            background: rgba(79, 172, 254, 0.3);
-            border-color: #4facfe;
+        .quick-btn:hover {
+            background: rgba(77, 210, 208, 0.2);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
         }
 
+        /* Tarjetas de Metricas */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -150,60 +186,59 @@
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
+            background: rgba(63, 111, 123, 0.2);
+            border: 1px solid var(--secondary-color);
+            border-radius: 8px;
             padding: 25px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
         .stat-card:hover {
+            border-color: var(--primary-color);
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
         .stat-value {
             font-size: 2.5rem;
-            font-weight: bold;
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 700;
+            color: var(--primary-color);
         }
 
         .stat-label {
-            color: #8892b0;
-            margin-top: 5px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 8px;
             text-transform: uppercase;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             letter-spacing: 1px;
+            font-weight: 600;
         }
 
+        /* Winner Card - Highlight Section */
         .winner-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 20px;
+            background: linear-gradient(90deg, #3f6f7b 0%, #4dd2d0 100%);
+            border-radius: 12px;
             padding: 30px;
             margin-bottom: 30px;
             text-align: center;
-            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+            color: var(--dark-bg);
         }
 
         .winner-card h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            color: var(--dark-bg) !important;
         }
 
         .winner-url {
-            font-size: 1.1rem;
+            font-size: 1rem;
             word-break: break-all;
-            opacity: 0.9;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-weight: 400;
         }
 
         .winner-stats {
@@ -219,25 +254,28 @@
 
         .winner-stat-value {
             font-size: 1.8rem;
-            font-weight: bold;
+            font-weight: 700;
+            color: var(--dark-bg);
         }
 
         .winner-stat-label {
-            opacity: 0.8;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
+        /* Tabla */
         .table-container {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            background: rgba(63, 111, 123, 0.15);
+            border: 1px solid var(--secondary-color);
+            border-radius: 12px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .table-header {
             padding: 20px 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--secondary-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -246,42 +284,56 @@
         }
 
         .table-header h2 {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
         }
 
         .dimension-badge {
-            background: rgba(79, 172, 254, 0.2);
+            background: rgba(77, 210, 208, 0.2);
             padding: 5px 15px;
             border-radius: 20px;
-            font-size: 0.85rem;
-            color: #4facfe;
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            padding: 0 15px 15px 15px;
         }
 
         th {
             text-align: left;
-            padding: 15px 25px;
-            background: rgba(255, 255, 255, 0.03);
-            color: #8892b0;
+            padding: 12px 20px;
+            color: var(--primary-color);
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.8rem;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--secondary-color);
+        }
+
+        tr {
+            background-color: rgba(255, 255, 255, 0.03);
+            transition: all 0.2s ease;
+        }
+
+        thead tr {
+            background: transparent;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(77, 210, 208, 0.1);
         }
 
         td {
-            padding: 20px 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px 20px;
+            border: none;
         }
 
-        tr:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-
+        /* Ranking Badges */
         .rank {
             display: inline-flex;
             align-items: center;
@@ -289,14 +341,15 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-            font-weight: bold;
-            font-size: 0.9rem;
+            background-color: var(--secondary-color);
+            color: var(--white);
+            font-weight: 600;
+            font-size: 0.85rem;
         }
 
-        .rank-1 { background: linear-gradient(135deg, #f5af19, #f12711); }
-        .rank-2 { background: linear-gradient(135deg, #bdc3c7, #2c3e50); }
-        .rank-3 { background: linear-gradient(135deg, #cd7f32, #8B4513); }
+        .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: var(--dark-bg); }
+        .rank-2 { background: linear-gradient(135deg, #C0C0C0, #A8A8A8); color: var(--dark-bg); }
+        .rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); color: var(--white); }
 
         .row-key {
             max-width: 400px;
@@ -305,34 +358,39 @@
             white-space: nowrap;
         }
 
-        .row-key a {
-            color: #4facfe;
+        /* Enlaces */
+        a {
+            color: var(--primary-color);
             text-decoration: none;
+            font-weight: 400;
+            transition: color 0.2s;
         }
 
-        .row-key a:hover {
-            text-decoration: underline;
+        a:hover {
+            color: var(--white);
         }
 
+        /* Metricas en tabla */
         .metric {
             font-weight: 600;
         }
 
-        .metric-clicks { color: #4facfe; }
-        .metric-impressions { color: #00f2fe; }
-        .metric-ctr { color: #f5af19; }
+        .metric-clicks { color: var(--primary-color); }
+        .metric-impressions { color: #6dd5ed; }
+        .metric-ctr { color: #FFD700; }
         .metric-position { color: #a78bfa; }
 
+        /* Error Container */
         .error-container {
-            background: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.5);
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 30px;
             text-align: center;
         }
 
         .error-container h2 {
-            color: #ef4444;
+            color: #ef4444 !important;
             margin-bottom: 15px;
         }
 
@@ -340,24 +398,33 @@
             background: rgba(167, 139, 250, 0.2);
             padding: 5px 15px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #a78bfa;
             margin-left: 10px;
+            font-weight: 600;
         }
 
         footer {
             text-align: center;
             margin-top: 40px;
-            color: #8892b0;
-            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            font-weight: 300;
         }
 
+        footer a {
+            color: var(--primary-color);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            h1 { font-size: 1.8rem; }
+            .container { padding: 1rem; }
+            h1 { font-size: 1.6rem; }
             .stat-value { font-size: 2rem; }
-            th, td { padding: 12px 15px; }
-            .row-key { max-width: 200px; }
+            th, td { padding: 10px 12px; }
+            .row-key { max-width: 180px; }
             .form-grid { grid-template-columns: 1fr; }
+            .winner-stats { gap: 20px; }
         }
     </style>
 </head>
@@ -408,7 +475,7 @@
                         <input type="text" name="filter" placeholder="Buscar..." value="{{ current_filter or '' }}">
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn">Consultar</button>
+                        <button type="submit">Consultar</button>
                     </div>
                 </div>
             </form>
@@ -533,7 +600,7 @@
         {% endif %}
 
         <footer>
-            <p>Google Search Console Dashboard | {{ data.site_url if data else '' }}</p>
+            <p>Google Search Console Dashboard | <a href="https://www.adrihosan.com" target="_blank">adrihosan.com</a></p>
         </footer>
     </div>
 </body>
