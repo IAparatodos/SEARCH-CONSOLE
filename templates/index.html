@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Search Console - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #8892b0;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #8892b0;
+            margin-top: 5px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .winner-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .winner-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .winner-url {
+            font-size: 1.1rem;
+            word-break: break-all;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .winner-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .winner-stat {
+            text-align: center;
+        }
+
+        .winner-stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .winner-stat-label {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-header h2 {
+            font-size: 1.3rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px 25px;
+            background: rgba(255, 255, 255, 0.03);
+            color: #8892b0;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .rank {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .rank-1 { background: linear-gradient(135deg, #f5af19, #f12711); }
+        .rank-2 { background: linear-gradient(135deg, #bdc3c7, #2c3e50); }
+        .rank-3 { background: linear-gradient(135deg, #cd7f32, #8B4513); }
+
+        .page-url {
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .page-url a {
+            color: #4facfe;
+            text-decoration: none;
+        }
+
+        .page-url a:hover {
+            text-decoration: underline;
+        }
+
+        .metric {
+            font-weight: 600;
+        }
+
+        .metric-clicks { color: #4facfe; }
+        .metric-impressions { color: #00f2fe; }
+        .metric-ctr { color: #f5af19; }
+        .metric-position { color: #a78bfa; }
+
+        .error-container {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .error-container h2 {
+            color: #ef4444;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #8892b0;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .stat-value { font-size: 2rem; }
+            th, td { padding: 12px 15px; }
+            .page-url { max-width: 200px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Search Console Dashboard</h1>
+            {% if data %}
+            <p class="subtitle">{{ data.site_url }} | {{ data.start_date }} - {{ data.end_date }} ({{ data.days }} días)</p>
+            {% endif %}
+        </header>
+
+        {% if error %}
+        <div class="error-container">
+            <h2>Error al obtener datos</h2>
+            <p>{{ error }}</p>
+        </div>
+        {% elif data and data.pages %}
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ "{:,}".format(data.total_clicks) }}</div>
+                <div class="stat-label">Total Clicks</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ "{:,}".format(data.total_impressions) }}</div>
+                <div class="stat-label">Total Impresiones</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ data.pages|length }}</div>
+                <div class="stat-label">Páginas Top</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ data.days }}</div>
+                <div class="stat-label">Días Analizados</div>
+            </div>
+        </div>
+
+        <div class="winner-card">
+            <h2>🏆 Página Más Visitada</h2>
+            <p class="winner-url">{{ data.pages[0].page }}</p>
+            <div class="winner-stats">
+                <div class="winner-stat">
+                    <div class="winner-stat-value">{{ "{:,}".format(data.pages[0].clicks) }}</div>
+                    <div class="winner-stat-label">Clicks</div>
+                </div>
+                <div class="winner-stat">
+                    <div class="winner-stat-value">{{ "{:,}".format(data.pages[0].impressions) }}</div>
+                    <div class="winner-stat-label">Impresiones</div>
+                </div>
+                <div class="winner-stat">
+                    <div class="winner-stat-value">{{ data.pages[0].ctr }}%</div>
+                    <div class="winner-stat-label">CTR</div>
+                </div>
+                <div class="winner-stat">
+                    <div class="winner-stat-value">{{ data.pages[0].position }}</div>
+                    <div class="winner-stat-label">Posición</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h2>Top 10 Páginas por Clicks</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Página</th>
+                        <th>Clicks</th>
+                        <th>Impresiones</th>
+                        <th>CTR</th>
+                        <th>Posición</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for page in data.pages %}
+                    <tr>
+                        <td>
+                            <span class="rank {% if loop.index <= 3 %}rank-{{ loop.index }}{% endif %}">
+                                {{ loop.index }}
+                            </span>
+                        </td>
+                        <td class="page-url">
+                            <a href="{{ page.page }}" target="_blank" title="{{ page.page }}">
+                                {{ page.page | replace(data.site_url, '') or '/' }}
+                            </a>
+                        </td>
+                        <td class="metric metric-clicks">{{ "{:,}".format(page.clicks) }}</td>
+                        <td class="metric metric-impressions">{{ "{:,}".format(page.impressions) }}</td>
+                        <td class="metric metric-ctr">{{ page.ctr }}%</td>
+                        <td class="metric metric-position">{{ page.position }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+        <div class="error-container">
+            <h2>Sin datos</h2>
+            <p>No se encontraron datos para el período especificado.</p>
+        </div>
+        {% endif %}
+
+        <footer>
+            <p>Datos de Google Search Console | Actualizado: {{ now().strftime('%Y-%m-%d %H:%M') if now is defined else 'N/A' }}</p>
+        </footer>
+    </div>
+</body>
+</html>
