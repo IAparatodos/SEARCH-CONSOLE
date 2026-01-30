@@ -7,9 +7,6 @@ en los últimos 90 días.
 import os
 import json
 from datetime import datetime, timedelta
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
 SCOPES = ['https://www.googleapis.com/auth/webmasters.readonly']
@@ -18,7 +15,25 @@ TOKEN_PATH = os.path.expanduser('~/.config/gsc/token.json')
 SITE_URL = 'https://www.adrihosan.com'
 
 def get_credentials():
-    """Obtiene o refresca las credenciales de Google."""
+    """Obtiene credenciales de Google (soporta service account y OAuth)."""
+
+    # Leer el archivo de credenciales para detectar el tipo
+    with open(CREDENTIALS_PATH, 'r') as f:
+        creds_data = json.load(f)
+
+    # Si es una cuenta de servicio
+    if creds_data.get('type') == 'service_account':
+        from google.oauth2 import service_account
+        creds = service_account.Credentials.from_service_account_file(
+            CREDENTIALS_PATH, scopes=SCOPES
+        )
+        return creds
+
+    # Si son credenciales OAuth (installed o web)
+    from google.oauth2.credentials import Credentials
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from google.auth.transport.requests import Request
+
     creds = None
 
     if os.path.exists(TOKEN_PATH):
