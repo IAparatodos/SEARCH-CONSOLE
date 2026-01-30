@@ -6,7 +6,7 @@ Aplicación web para visualizar datos de Google Search Console.
 import os
 import json
 from datetime import datetime, timedelta
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from googleapiclient.discovery import build
 
 app = Flask(__name__)
@@ -34,29 +34,47 @@ def get_credentials():
     return None
 
 
-def get_search_console_data(days=90, row_limit=10):
-    """Obtiene datos de Search Console."""
+def get_search_console_data(days=90, row_limit=10, dimension='page',
+                            start_date=None, end_date=None, query_filter=None):
+    """Obtiene datos de Search Console con filtros personalizados."""
     creds = get_credentials()
     service = build('searchconsole', 'v1', credentials=creds)
 
-    end_date = datetime.now().date()
-    start_date = end_date - timedelta(days=days)
+    if not end_date:
+        end_date = datetime.now().date()
+    elif isinstance(end_date, str):
+        end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
 
-    request = {
+    if not start_date:
+        start_date = end_date - timedelta(days=days)
+    elif isinstance(start_date, str):
+        start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+
+    request_body = {
         'startDate': start_date.strftime('%Y-%m-%d'),
         'endDate': end_date.strftime('%Y-%m-%d'),
-        'dimensions': ['page'],
+        'dimensions': [dimension],
         'rowLimit': row_limit,
         'dataState': 'final'
     }
 
-    response = service.searchanalytics().query(siteUrl=SITE_URL, body=request).execute()
+    # Añadir filtro de búsqueda si se proporciona
+    if query_filter:
+        request_body['dimensionFilterGroups'] = [{
+            'filters': [{
+                'dimension': dimension,
+                'operator': 'contains',
+                'expression': query_filter
+            }]
+        }]
 
-    pages = []
+    response = service.searchanalytics().query(siteUrl=SITE_URL, body=request_body).execute()
+
+    rows = []
     if 'rows' in response:
         for row in response['rows']:
-            pages.append({
-                'page': row['keys'][0],
+            rows.append({
+                'key': row['keys'][0],
                 'clicks': int(row['clicks']),
                 'impressions': int(row['impressions']),
                 'ctr': round(row['ctr'] * 100, 2),
@@ -67,32 +85,67 @@ def get_search_console_data(days=90, row_limit=10):
         'site_url': SITE_URL,
         'start_date': start_date.strftime('%Y-%m-%d'),
         'end_date': end_date.strftime('%Y-%m-%d'),
-        'days': days,
-        'pages': pages,
-        'total_clicks': sum(p['clicks'] for p in pages),
-        'total_impressions': sum(p['impressions'] for p in pages)
+        'days': (end_date - start_date).days,
+        'dimension': dimension,
+        'filter': query_filter,
+        'rows': rows,
+        'total_clicks': sum(r['clicks'] for r in rows),
+        'total_impressions': sum(r['impressions'] for r in rows)
     }
 
 
 @app.route('/')
 def index():
     """Página principal con los datos de Search Console."""
+    # Obtener parámetros de la URL
+    days = request.args.get('days', 90, type=int)
+    dimension = request.args.get('dimension', 'page')
+    row_limit = request.args.get('limit', 10, type=int)
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    query_filter = request.args.get('filter', '')
+
     try:
-        data = get_search_console_data(days=90, row_limit=10)
-        return render_template('index.html', data=data, error=None)
+        data = get_search_console_data(
+            days=days,
+            row_limit=row_limit,
+            dimension=dimension,
+            start_date=start_date,
+            end_date=end_date,
+            query_filter=query_filter if query_filter else None
+        )
+        return render_template('index.html', data=data, error=None,
+                             current_days=days, current_dimension=dimension,
+                             current_limit=row_limit, current_filter=query_filter)
     except Exception as e:
-        return render_template('index.html', data=None, error=str(e))
+        return render_template('index.html', data=None, error=str(e),
+                             current_days=days, current_dimension=dimension,
+                             current_limit=row_limit, current_filter=query_filter)
 
 
 @app.route('/api/data')
 def api_data():
     """API endpoint para obtener datos en JSON."""
+    days = request.args.get('days', 90, type=int)
+    dimension = request.args.get('dimension', 'page')
+    row_limit = request.args.get('limit', 10, type=int)
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    query_filter = request.args.get('filter')
+
     try:
-        data = get_search_console_data(days=90, row_limit=10)
+        data = get_search_console_data(
+            days=days,
+            row_limit=row_limit,
+            dimension=dimension,
+            start_date=start_date,
+            end_date=end_date,
+            query_filter=query_filter
+        )
         return jsonify(data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='127.0.0.1', port=5000)
