@@ -450,6 +450,104 @@
             color: var(--primary-color);
         }
 
+        /* Query Form */
+        .query-form {
+            background: rgba(63, 111, 123, 0.15);
+            border: 1px solid var(--secondary-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .query-form h3 {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            color: var(--primary-color);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .form-group select {
+            padding: 10px 12px;
+            border: 1px solid var(--secondary-color);
+            border-radius: 6px;
+            background: rgba(63, 111, 123, 0.2);
+            color: var(--white);
+            font-size: 0.85rem;
+            font-family: var(--font-main);
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group select option {
+            background: var(--dark-bg);
+        }
+
+        .btn-filter {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            border: 2px solid var(--primary-color);
+            background-color: var(--primary-color);
+            color: var(--dark-bg);
+            cursor: pointer;
+            font-family: var(--font-main);
+            transition: all 0.2s;
+        }
+
+        .btn-filter:hover {
+            background-color: var(--white);
+            color: var(--primary-color);
+        }
+
+        .quick-filters {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            padding: 6px 14px;
+            background: transparent;
+            border: 1px solid var(--secondary-color);
+            border-radius: 20px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font-main);
+        }
+
+        .quick-btn:hover, .quick-btn.active {
+            background: rgba(77, 210, 208, 0.2);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
         /* Responsive */
         @media (max-width: 900px) {
             .container { padding: 1rem; }
@@ -459,6 +557,7 @@
             .stat-value { font-size: 1.6rem; }
             th, td { padding: 8px 10px; font-size: 0.75rem; }
             .url-cell { max-width: 150px; }
+            .form-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -500,11 +599,56 @@
 
         <!-- Tab 1: Rendimiento General -->
         <div class="tab-content active" id="tab-performance">
-            <div class="loading" id="loading-performance">
+            <!-- Formulario de Filtros -->
+            <div class="query-form">
+                <h3>Consulta Personalizada</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Dimension</label>
+                        <select id="filter-dimension">
+                            <option value="page">Paginas</option>
+                            <option value="query">Keywords</option>
+                            <option value="country">Paises</option>
+                            <option value="device">Dispositivos</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Periodo</label>
+                        <select id="filter-days">
+                            <option value="7">7 dias</option>
+                            <option value="28">28 dias</option>
+                            <option value="90" selected>90 dias</option>
+                            <option value="180">6 meses</option>
+                            <option value="365">1 ano</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Resultados</label>
+                        <select id="filter-limit">
+                            <option value="10" selected>Top 10</option>
+                            <option value="25">Top 25</option>
+                            <option value="50">Top 50</option>
+                            <option value="100">Top 100</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn-filter" onclick="applyFilters()">Consultar</button>
+                    </div>
+                </div>
+                <div class="quick-filters">
+                    <button class="quick-btn" onclick="quickFilter('page', 90, 10)">Top Paginas 90d</button>
+                    <button class="quick-btn" onclick="quickFilter('query', 28, 25)">Keywords 28d</button>
+                    <button class="quick-btn" onclick="quickFilter('country', 90, 10)">Por Pais</button>
+                    <button class="quick-btn" onclick="quickFilter('device', 90, 10)">Por Dispositivo</button>
+                    <button class="quick-btn" onclick="quickFilter('page', 7, 10)">Ultima Semana</button>
+                </div>
+            </div>
+
+            <div class="loading" id="loading-performance" style="display:none;">
                 <div class="loading-spinner"></div>
                 <p>Cargando rendimiento...</p>
             </div>
-            <div id="content-performance" style="display:none;"></div>
+            <div id="content-performance"></div>
         </div>
 
         <!-- Tab 2: Oportunidades CTR -->
@@ -560,14 +704,19 @@
             });
         });
 
-        // Data loading state
+        // Data loading state (performance tab not cached - allows filter changes)
         const loadedTabs = {};
 
         async function loadTabData(tabId) {
+            // Performance tab always reloads (no cache) to support filters
+            if (tabId === 'performance') {
+                await loadPerformance();
+                return;
+            }
+
             if (loadedTabs[tabId]) return;
 
             const loaders = {
-                'performance': loadPerformance,
                 'ctr': loadCtrOpportunities,
                 'quickwins': loadQuickWins,
                 'transactional': loadTransactional
@@ -588,18 +737,52 @@
             return url.replace(SITE_URL, '') || '/';
         }
 
+        // Dimension labels
+        const dimensionLabels = {
+            'page': { singular: 'Pagina', plural: 'Paginas', icon: '📄' },
+            'query': { singular: 'Keyword', plural: 'Keywords', icon: '🔍' },
+            'country': { singular: 'Pais', plural: 'Paises', icon: '🌍' },
+            'device': { singular: 'Dispositivo', plural: 'Dispositivos', icon: '📱' }
+        };
+
+        // Apply filters
+        function applyFilters() {
+            const dimension = document.getElementById('filter-dimension').value;
+            const days = document.getElementById('filter-days').value;
+            const limit = document.getElementById('filter-limit').value;
+            loadPerformance(dimension, days, limit);
+        }
+
+        // Quick filter
+        function quickFilter(dimension, days, limit) {
+            document.getElementById('filter-dimension').value = dimension;
+            document.getElementById('filter-days').value = days;
+            document.getElementById('filter-limit').value = limit;
+            loadPerformance(dimension, days, limit);
+        }
+
         // Tab 1: Performance
-        async function loadPerformance() {
+        async function loadPerformance(dimension = 'page', days = 90, limit = 10) {
+            const loadingEl = document.getElementById('loading-performance');
+            const contentEl = document.getElementById('content-performance');
+
+            loadingEl.style.display = 'block';
+            contentEl.innerHTML = '';
+
             try {
-                const response = await fetch('/api/performance?days=90&limit=10');
+                const response = await fetch(`/api/performance?dimension=${dimension}&days=${days}&limit=${limit}`);
                 const data = await response.json();
 
                 if (data.error) throw new Error(data.error);
+
+                const dimInfo = dimensionLabels[dimension] || dimensionLabels['page'];
 
                 document.getElementById('date-range').textContent =
                     `${data.site_url} | ${data.start_date} - ${data.end_date} (${data.days} dias)`;
 
                 const top = data.rows[0] || {};
+                const isClickable = dimension === 'page';
+
                 const html = `
                     <div class="stats-grid">
                         <div class="stat-card">
@@ -612,7 +795,7 @@
                         </div>
                         <div class="stat-card">
                             <div class="stat-value">${data.rows.length}</div>
-                            <div class="stat-label">Paginas Top</div>
+                            <div class="stat-label">${dimInfo.plural} Top</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-value">${data.days}</div>
@@ -622,7 +805,7 @@
 
                     ${top.key ? `
                     <div class="winner-card">
-                        <h2>🏆 Pagina Mas Visitada</h2>
+                        <h2>${dimInfo.icon} Top #1 ${dimInfo.singular}</h2>
                         <p class="winner-url">${top.key}</p>
                         <div class="winner-stats">
                             <div>
@@ -647,14 +830,14 @@
 
                     <div class="table-container">
                         <div class="table-header">
-                            <h2>🔥 Top 10 Paginas por Clicks</h2>
-                            <span class="badge badge-primary">${data.days} dias</span>
+                            <h2>🔥 Top ${dimInfo.plural} por Clicks</h2>
+                            <span class="badge badge-primary">${dimension} | ${data.days} dias</span>
                         </div>
                         <table>
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Pagina</th>
+                                    <th>${dimInfo.singular}</th>
                                     <th>Clicks</th>
                                     <th>Impresiones</th>
                                     <th>CTR</th>
@@ -665,7 +848,12 @@
                                 ${data.rows.map((row, i) => `
                                 <tr>
                                     <td><span class="rank ${i < 3 ? 'rank-' + (i+1) : ''}">${i+1}</span></td>
-                                    <td class="url-cell"><a href="${row.key}" target="_blank" title="${row.key}">${cleanUrl(row.key)}</a></td>
+                                    <td class="url-cell">
+                                        ${isClickable
+                                            ? `<a href="${row.key}" target="_blank" title="${row.key}">${cleanUrl(row.key)}</a>`
+                                            : `<strong>${row.key}</strong>`
+                                        }
+                                    </td>
                                     <td class="metric metric-clicks"><strong>${formatNumber(row.clicks)}</strong></td>
                                     <td class="metric metric-impressions">${formatNumber(row.impressions)}</td>
                                     <td class="metric metric-ctr">${row.ctr}%</td>
@@ -677,19 +865,17 @@
                     </div>
                 `;
 
-                document.getElementById('loading-performance').style.display = 'none';
-                document.getElementById('content-performance').innerHTML = html;
-                document.getElementById('content-performance').style.display = 'block';
+                loadingEl.style.display = 'none';
+                contentEl.innerHTML = html;
 
             } catch (error) {
-                document.getElementById('loading-performance').style.display = 'none';
-                document.getElementById('content-performance').innerHTML = `
+                loadingEl.style.display = 'none';
+                contentEl.innerHTML = `
                     <div class="error-message">
                         <h3>Error al cargar datos</h3>
                         <p>${error.message}</p>
                     </div>
                 `;
-                document.getElementById('content-performance').style.display = 'block';
             }
         }
 

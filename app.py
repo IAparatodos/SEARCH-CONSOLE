@@ -120,11 +120,18 @@ def index():
 
 @app.route('/api/performance')
 def api_performance():
-    """Tab 1: Rendimiento General - Top páginas por clicks."""
+    """Tab 1: Rendimiento General - Soporta múltiples dimensiones."""
     try:
         days = request.args.get('days', 90, type=int)
         limit = request.args.get('limit', 10, type=int)
-        data = query_search_console(days=days, dimension='page', row_limit=limit)
+        dimension = request.args.get('dimension', 'page')
+
+        # Validar dimensión
+        valid_dimensions = ['page', 'query', 'country', 'device']
+        if dimension not in valid_dimensions:
+            dimension = 'page'
+
+        data = query_search_console(days=days, dimension=dimension, row_limit=limit)
         return jsonify(data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
